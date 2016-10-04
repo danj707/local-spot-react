@@ -6,10 +6,9 @@ var Layout = require('../components/Layout');
 
 describe('Layout Component', function() {
     it('Renders the layout',  function() {
-        var welcome = "Welcome to LocalSpot!";
 
         var renderer = TestUtils.createRenderer();
-        renderer.render(<Layout welcome={welcome} />);
+        renderer.render(<Layout />);
         var result = renderer.getRenderOutput();
         result.props.className.should.equal('layout');
 
