@@ -10,15 +10,18 @@ var Link = router.Link;
 var Layout = require('./components/Layout');
 var Events = require('./components/Events');
 
+import GoogleMap from './components/google_map';
+import App from './components/app';
+
 var routes = (
     <Router history={hashHistory}>
 
         <Route path="/" component={Layout} />
 
         {/* future route for event detail listing */}
-        <Route path="/events" component={Layout}>
-            <IndexRoute component={Events} />
-        </Route>
+        {/* <Route path="/gmap" component={Layout}>
+            <IndexRoute component={Gmap} />
+        </Route> */}
 
 
     </Router>
@@ -26,5 +29,5 @@ var routes = (
 
 //Doc listener and React renderer
 document.addEventListener('DOMContentLoaded', function() {
-    ReactDOM.render(routes, document.getElementById('app'));
+    ReactDOM.render(<Layout />, document.getElementById('app'));
 });

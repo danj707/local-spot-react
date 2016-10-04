@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test-build": "./node_modules/.bin/mocha --compilers js:babel-register ../../test/",
-    "dev": "./node_modules/.bin/webpack-dev-server --content-base build --inline --hot",
+    "dev": "./node_modules/.bin/webpack-dev-server --content-base build --inline --hot --progress --colors",
     "start": "node index.js"
   },
   "repository": {
@@ -26,12 +26,16 @@
     "babel-preset-react": "^6.16.0",
     "babel-register": "^6.16.3",
     "chai": "^3.5.0",
+    "google-maps-react": "^1.0.18",
     "mocha": "^3.1.0",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
     "react-dom": "^15.3.2",
+    "react-google-map": "^1.0.1",
+    "react-googlemaps": "^0.4.0",
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
+    "reactify": "^1.1.1",
     "superagent": "^2.3.0",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.1"
