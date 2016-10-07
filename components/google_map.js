@@ -4,18 +4,14 @@ export default class extends React.Component {
 
   //should it rerender if state updated
   shouldComponentUpdate() {
-    return false;
-  }
-
-  componentWillReceiveProps() {
-    this.map.Marker({position: {lat: 32.5045256, lng: -96.80405820000001 }, map: map, title: 'Hello World!'});
+    return true;
   }
 
   componentDidMount () {
     console.log(this.props);
         this.map = new google.maps.Map(this.refs.map, {
-        center: {lat: this.props.lat, lng: this.props.lng },
-        zoom: 8
+          center: {lat: this.props.lat, lng: this.props.lng },
+          zoom: this.props.zoom
     });
   }
 
