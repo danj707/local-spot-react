@@ -11,7 +11,6 @@ var Layout = require('./components/Layout');
 var Events = require('./components/Events');
 
 import GoogleMap from './components/google_map';
-import App from './components/app';
 
 var routes = (
     <Router history={hashHistory}>
@@ -19,8 +18,8 @@ var routes = (
         <Route path="/" component={Layout} />
 
         {/* future route for event detail listing */}
-        {/* <Route path="/gmap" component={Layout}>
-            <IndexRoute component={Gmap} />
+        {/* <Route path="/Events" component={Layout}>
+            <IndexRoute component={Events} />
         </Route> */}
 
 

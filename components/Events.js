@@ -1,5 +1,7 @@
 
 var React = require('react');
+var router = require('react-router');
+var Link = router.link;
 
 //creates a stateful component named 'List'
 var Events = React.createClass({
@@ -14,19 +16,20 @@ var Events = React.createClass({
        //log out the event data props
        var events = this.props.event_arr.map(function(elist) {
          return (
-                <li key={elist.loc_id}>
-                Name: {elist.loc_name}
-                Lat: {elist.loc_lat}
-                Lng: {elist.loc_lng}
-                </li>
+              <li key={elist.loc_id}>
+              Name: {elist.loc_name}
+              Rating: {elist.rating}
+              </li>
          );
        });
 
        return (
-         <div className="events">
-       {this.props.info}
-           {events}
-         </div>
+       <div className="events">
+              <ul className="list">
+              <p>{this.props.info}</p>
+              <p>{events}</p>
+       </ul>
+       </div>
        );
 
        }
