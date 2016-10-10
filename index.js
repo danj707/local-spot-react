@@ -10,7 +10,6 @@ var Link = router.Link;
 var Layout = require('./components/Layout');
 var Events = require('./components/Events');
 var EventDetail = require('./components/EventDetail');
-
 import GoogleMap from './components/google_map';
 
 var routes = (
