@@ -1,3 +1,6 @@
+/*
+Google calendarhttps://calendar.google.com/calendar/render?action=TEMPLATE&dates=20160919T220000Z/20160919T230000Z&text=Test+calendar
+*/
 
 var React = require('react');
 import { render } from 'react-dom'
