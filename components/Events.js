@@ -1,38 +1,36 @@
 
 var React = require('react');
-var router = require('react-router');
-var Link = router.link;
+import { render } from 'react-dom'
+import { Router, Route, Link, browserHistory } from 'react-router'
 
 //creates a stateful component named 'List'
 var Events = React.createClass({
-       getInitialState: function() {
-           return {
-           };
-       },
        componentDidMount: function() {
-              console.log(this.props.event_arr); //How does this log the correct data,
+              console.log(this.props.event_arr);
+              //future info
        },
        render: function() {
-       //log out the event data props
-       var events = this.props.event_arr.map(function(elist) {
-         return (
-              <li key={elist.loc_id}>
-              Name: {elist.loc_name}
-              Rating: {elist.rating}
-              </li>
-         );
-       });
 
-       return (
-       <div className="events">
-              <ul className="list">
-              <p>{this.props.info}</p>
-              <p>{events}</p>
-       </ul>
-       </div>
+              return (
+                     <div className="events">
+                     <ul className="list">
+                     <p className="list_top">{this.props.info}</p>
+                     {this.props.event_arr.map(elist => (
+                            <li key={elist.loc_id}>
+                            <p><i className="fa fa-arrow-right" aria-hidden="true"></i> <Link className="href" to={'/events/' + elist.loc_id}>{elist.loc_name}</Link> </p>
+                            <p>User Rating: {elist.rating}</p>
+                            <p><a href={elist.link} target="blank">Visit on web <i className="fa fa-external-link" aria-hidden="true"></i></a></p>
+                            Location tips: {elist.loc_tips}
+                            <hr></hr>
+                            </li>
+                     ))}
+              </ul>
+              </div>
        );
 
        }
 });
+
+
 
 module.exports = Events;

@@ -9,24 +9,25 @@ var Link = router.Link;
 
 var Layout = require('./components/Layout');
 var Events = require('./components/Events');
+var EventDetail = require('./components/EventDetail');
 
 import GoogleMap from './components/google_map';
 
 var routes = (
     <Router history={hashHistory}>
 
-        <Route path="/" component={Layout} />
+<Route path="/" component={Layout} />
 
-        {/* future route for event detail listing */}
-        {/* <Route path="/Events" component={Layout}>
-            <IndexRoute component={Events} />
-        </Route> */}
-
+    <Route component={Layout}>
+        <Route component={Events}>
+            <Route path="/events/:event_id" component={EventDetail} />
+        </Route>
+    </Route>
 
     </Router>
 );
 
 //Doc listener and React renderer
 document.addEventListener('DOMContentLoaded', function() {
-    ReactDOM.render(<Layout />, document.getElementById('app'));
+    ReactDOM.render(routes, document.getElementById('app'));
 });
