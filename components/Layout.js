@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Events from './Events';
-import GoogleMap from './google_map';
+import GoogleMap from './GoogleMap';
 
 import { Router } from 'react-router';
 import { push } from 'react-router-redux';

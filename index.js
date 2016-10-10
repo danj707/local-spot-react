@@ -10,7 +10,8 @@ var Link = router.Link;
 var Layout = require('./components/Layout');
 var Events = require('./components/Events');
 var EventDetail = require('./components/EventDetail');
-var GoogleMap = require('./components/google_map');
+//var GoogleMap = require('./components/google_map');
+var GoogleMap = require('./components/GoogleMap');
 
 var routes = (
     <Router history={hashHistory}>
