@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class extends React.Component {
+export default class GoogleMap extends React.Component {
 
   //should it rerender if state updated
   shouldComponentUpdate() {
@@ -8,6 +8,7 @@ export default class extends React.Component {
 }
 
 componentWillReceiveProps(nextProps) {
+  console.log(this.props.markers);
       //   this.setState({
       //     lat: nextProps.lat,
       //     lng: nextProps.lng,
@@ -24,7 +25,7 @@ componentWillReceiveProps(nextProps) {
           this.map.Marker = new google.maps.Marker({
               position: {lat: mapPoints[i].loc_lat, lng: mapPoints[i].loc_lng},
               map: this.map,
-              title: mapPoints[i].loc_name
+              title: mapPoints[i].loc_name + '-' + mapPoints[i].loc_address.formattedAddress[0] + ',' + mapPoints[i].loc_address.formattedAddress[1]
           });
       }
   }

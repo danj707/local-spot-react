@@ -58,7 +58,6 @@
 	var Layout = __webpack_require__(235);
 	var Events = __webpack_require__(236);
 	var EventDetail = __webpack_require__(243);
-	//var GoogleMap = require('./components/google_map');
 	var GoogleMap = __webpack_require__(237);
 	
 	var routes = React.createElement(
@@ -70,7 +69,7 @@
 	        { component: Layout },
 	        React.createElement(
 	            Route,
-	            { component: Events },
+	            { component: EventDetail },
 	            React.createElement(Route, { path: '/events/:event_id', component: EventDetail })
 	        )
 	    )
@@ -27143,10 +27142,10 @@
 	5 = update Events and Map components simultaneously, which rerenders components and displays new data in Events, Map.  Displays labels on map for events returned
 	*/
 	
-	/* TODO list
-	-Better info window on marker popup with details
-	-Click on link for name of business in events window, takes to different route, displays fullpage info - OR - displays to new target window
-	- Error handling if you can't get geolocation data.
+	/* TODO additions/improvements list
+	- Better error handling if you can't get geolocation data, right now, only an alert window
+	- Improve react router and path handling, display additional data in <eventdetail> window
+	
 	*/
 	
 	//Some Global Vars to store data
@@ -27162,18 +27161,24 @@
 	            var loc_id = element.venue.id;
 	            var rating = element.venue.rating;
 	            var link = "https://www.google.com/#q=";
+	            var loc_img = '';
+	            var currency = '';
 	            if (element.venue.url) {
 	               link = element.venue.url;
 	            } else {
 	               link += element.venue.name;
 	            }
+	            if (element.venue.photos.groups[0].items[0].prefix) {
+	               loc_img = element.venue.photos.groups[0].items[0].prefix + "width60" + element.venue.photos.groups[0].items[0].suffix;
+	            }
+	            var loc_address = element.venue.location;
 	            var loc_name = element.venue.name;
 	            var loc_lat = element.venue.location.lat;
 	            var loc_lng = element.venue.location.lng;
 	            var loc_tips = element.tips[0].text ? element.tips[0].text : 'No Tips';
 	
 	            /*update the array object to hold all this event data, push it all in, then pass to <Event>*/
-	            event_arr.push({ loc_id: loc_id, rating: rating, link: link, loc_name: loc_name, loc_lat: loc_lat, loc_lng: loc_lng, loc_tips: loc_tips });
+	            event_arr.push({ loc_id: loc_id, rating: rating, link: link, loc_name: loc_name, loc_lat: loc_lat, loc_lng: loc_lng, loc_tips: loc_tips, loc_img: loc_img, loc_address: loc_address });
 	         }
 	      } else {
 	         //handle errors
@@ -27183,14 +27188,11 @@
 	   return event_arr;
 	}
 	
-	//to be used later in google calendar stuff
-	// var calendar_add_url = "https://calendar.google.com/calendar/render?action=TEMPLATE&location=http://www.thinkful.com/hangout/mbanea&trp=false&dates=20160919T220000Z/20160919T230000Z&text=Thinkful+mentor+session&sf=true&output=xml#eventpage_6";
-	
 	//creates a stateful component named 'Layout'
 	var Layout = _react2.default.createClass({
 	   displayName: 'Layout',
 	
-	   /*Gets the initial state, sets some default state data, hardcoded middle of US for starting lat and long*/
+	   /*Gets the initial state, sets some default state data, hardcoded middle of US for starting lat and long by default, will pan to user's location after geolocate*/
 	   getInitialState: function getInitialState() {
 	      return {
 	         data: [],
@@ -27257,7 +27259,7 @@
 	         cache: false,
 	         success: function (data) {
 	            console.log(data);
-	            console.log(chosen);
+	            //console.log(chosen);
 	            data.response.groups[0].items.forEach(pushDataEvents);
 	            var text = "Your Top 20 Local " + chosen + " Spots";
 	            this.setState({ info: text, lat: lat, lng: lng });
@@ -27354,6 +27356,11 @@
 	            { className: 'childWrapper' },
 	            _react2.default.createElement(_GoogleMap2.default, { lat: this.state.lat, lng: this.state.lng, zoom: this.state.zoom, markers: event_arr }),
 	            _react2.default.createElement(_Events2.default, { event_arr: event_arr, className: 'events', info: this.state.info, type: this.state.chosen })
+	         ),
+	         _react2.default.createElement(
+	            'div',
+	            null,
+	            this.props.children
 	         )
 	      );
 	   }
@@ -27371,6 +27378,8 @@
 	
 	var _reactRouter = __webpack_require__(172);
 	
+	var loc_cal_link = "https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20160919T220000Z/20160919T230000Z&text=Go+To+";
+	
 	var React = __webpack_require__(1);
 	
 	
@@ -27379,11 +27388,10 @@
 	       displayName: 'Events',
 	
 	       componentDidMount: function componentDidMount() {
+	              //var event_arr = this.props.event_arr ? this.props.event_arr : 'Nothing to display';
 	              console.log(this.props.event_arr);
-	              //future info
 	       },
 	       render: function render() {
-	
 	              return React.createElement(
 	                     'div',
 	                     { className: 'events' },
@@ -27401,35 +27409,40 @@
 	                                          { key: elist.loc_id },
 	                                          React.createElement(
 	                                                 'p',
-	                                                 null,
+	                                                 { className: 'eventname' },
 	                                                 React.createElement('i', { className: 'fa fa-arrow-right', 'aria-hidden': 'true' }),
-	                                                 ' ',
 	                                                 React.createElement(
-	                                                        _reactRouter.Link,
-	                                                        { className: 'href', to: '/events/' + elist.loc_id },
+	                                                        'a',
+	                                                        { href: elist.link, target: 'blank' },
 	                                                        elist.loc_name
 	                                                 ),
+	                                                 '  - ',
+	                                                 elist.rating,
+	                                                 ' '
+	                                          ),
+	                                          React.createElement(
+	                                                 'div',
+	                                                 null,
+	                                                 React.createElement('img', { className: 'loc_img', src: elist.loc_img, alt: elist.loc_name })
+	                                          ),
+	                                          React.createElement(
+	                                                 'p',
+	                                                 { className: 'eventtext' },
+	                                                 'Location tips: ',
+	                                                 elist.loc_tips,
 	                                                 ' '
 	                                          ),
 	                                          React.createElement(
 	                                                 'p',
 	                                                 null,
-	                                                 'User Rating: ',
-	                                                 elist.rating
-	                                          ),
-	                                          React.createElement(
-	                                                 'p',
-	                                                 null,
+	                                                 React.createElement('i', { className: 'fa fa-calendar-check-o', 'aria-hidden': 'true' }),
 	                                                 React.createElement(
 	                                                        'a',
-	                                                        { href: elist.link, target: 'blank' },
-	                                                        'Visit on web ',
-	                                                        React.createElement('i', { className: 'fa fa-external-link', 'aria-hidden': 'true' })
+	                                                        { href: loc_cal_link + elist.loc_name + '&location=' + elist.loc_address.formattedAddress[0] + ',' + elist.loc_address.formattedAddress[1], target: 'blank' },
+	                                                        'Add to your Google Calendar'
 	                                                 )
 	                                          ),
-	                                          'Location tips: ',
-	                                          elist.loc_tips,
-	                                          React.createElement('hr', null)
+	                                          React.createElement('hr', { className: 'break' })
 	                                   );
 	                            })
 	                     )
@@ -27443,7 +27456,7 @@
 /* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -27463,17 +27476,17 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var _class = function (_React$Component) {
-	  _inherits(_class, _React$Component);
+	var GoogleMap = function (_React$Component) {
+	  _inherits(GoogleMap, _React$Component);
 	
-	  function _class() {
-	    _classCallCheck(this, _class);
+	  function GoogleMap() {
+	    _classCallCheck(this, GoogleMap);
 	
-	    return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+	    return _possibleConstructorReturn(this, (GoogleMap.__proto__ || Object.getPrototypeOf(GoogleMap)).apply(this, arguments));
 	  }
 	
-	  _createClass(_class, [{
-	    key: "shouldComponentUpdate",
+	  _createClass(GoogleMap, [{
+	    key: 'shouldComponentUpdate',
 	
 	
 	    //should it rerender if state updated
@@ -27481,8 +27494,9 @@
 	      return true;
 	    }
 	  }, {
-	    key: "componentWillReceiveProps",
+	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
+	      console.log(this.props.markers);
 	      //   this.setState({
 	      //     lat: nextProps.lat,
 	      //     lng: nextProps.lng,
@@ -27499,13 +27513,13 @@
 	          this.map.Marker = new google.maps.Marker({
 	            position: { lat: mapPoints[i].loc_lat, lng: mapPoints[i].loc_lng },
 	            map: this.map,
-	            title: mapPoints[i].loc_name
+	            title: mapPoints[i].loc_name + '-' + mapPoints[i].loc_address.formattedAddress[0] + ',' + mapPoints[i].loc_address.formattedAddress[1]
 	          });
 	        }
 	      }
 	    }
 	  }, {
-	    key: "componentDidMount",
+	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.map = new google.maps.Map(this.refs.map, {
 	        center: { lat: this.props.lat, lng: this.props.lng },
@@ -27513,16 +27527,16 @@
 	      });
 	    }
 	  }, {
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement("div", { id: "map", ref: "map", className: "map" });
+	      return _react2.default.createElement('div', { id: 'map', ref: 'map', className: 'map' });
 	    }
 	  }]);
 	
-	  return _class;
+	  return GoogleMap;
 	}(_react2.default.Component);
 	
-	exports.default = _class;
+	exports.default = GoogleMap;
 
 /***/ },
 /* 238 */
@@ -27902,23 +27916,16 @@
 	var EventDetail = React.createClass({
 	    displayName: 'EventDetail',
 	
-	    componentDidMount: function componentDidMount() {
-	        console.log("Mounted!");
-	        console.log(this.props);
-	    },
+	    componentDidMount: function componentDidMount() {},
 	    render: function render() {
 	        return React.createElement(
 	            'div',
 	            null,
 	            React.createElement(
-	                'p',
+	                'strong',
 	                null,
-	                React.createElement(
-	                    'strong',
-	                    null,
-	                    'Name: ',
-	                    event.name
-	                )
+	                'Name: ',
+	                this.props.children
 	            )
 	        );
 	    }

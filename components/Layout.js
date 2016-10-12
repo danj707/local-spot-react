@@ -24,10 +24,10 @@ import { hashHistory } from 'react-router';
 5 = update Events and Map components simultaneously, which rerenders components and displays new data in Events, Map.  Displays labels on map for events returned
 */
 
-/* TODO list
--Better info window on marker popup with details
--Click on link for name of business in events window, takes to different route, displays fullpage info - OR - displays to new target window
-- Error handling if you can't get geolocation data.
+/* TODO additions/improvements list
+- Better error handling if you can't get geolocation data, right now, only an alert window
+- Improve react router and path handling, display additional data in <eventdetail> window
+
 */
 
 //Some Global Vars to store data
@@ -43,18 +43,24 @@ function pushDataEvents (element, index, array) {
             let loc_id = element.venue.id;
             let rating = element.venue.rating;
             let link = "https://www.google.com/#q=";
+            let loc_img = '';
+            let currency = '';
             if(element.venue.url) {
                link = element.venue.url;
             } else {
                link += element.venue.name;
             }
+            if(element.venue.photos.groups[0].items[0].prefix) {
+               loc_img = element.venue.photos.groups[0].items[0].prefix + "width60" + element.venue.photos.groups[0].items[0].suffix;
+            }
+            let loc_address = element.venue.location;
             let loc_name = element.venue.name;
             let loc_lat = element.venue.location.lat;
             let loc_lng = element.venue.location.lng;
             var loc_tips = element.tips[0].text ? element.tips[0].text : 'No Tips';
 
             /*update the array object to hold all this event data, push it all in, then pass to <Event>*/
-            event_arr.push({loc_id, rating, link, loc_name, loc_lat, loc_lng, loc_tips});
+            event_arr.push({loc_id, rating, link, loc_name, loc_lat, loc_lng, loc_tips, loc_img, loc_address});
          }
       } else {
          //handle errors
@@ -64,12 +70,9 @@ function pushDataEvents (element, index, array) {
    return event_arr;
 }
 
-//to be used later in google calendar stuff
-// var calendar_add_url = "https://calendar.google.com/calendar/render?action=TEMPLATE&location=http://www.thinkful.com/hangout/mbanea&trp=false&dates=20160919T220000Z/20160919T230000Z&text=Thinkful+mentor+session&sf=true&output=xml#eventpage_6";
-
 //creates a stateful component named 'Layout'
 var Layout = React.createClass({
-    /*Gets the initial state, sets some default state data, hardcoded middle of US for starting lat and long*/
+    /*Gets the initial state, sets some default state data, hardcoded middle of US for starting lat and long by default, will pan to user's location after geolocate*/
     getInitialState: function () {
         return {
             data: [],
@@ -136,7 +139,7 @@ var Layout = React.createClass({
             cache: false,
             success: function(data) {
                console.log(data);
-               console.log(chosen);
+               //console.log(chosen);
                data.response.groups[0].items.forEach(pushDataEvents);
                let text = "Your Top 20 Local " + chosen + " Spots";
                this.setState({info: text, lat:lat,lng:lng});
@@ -179,6 +182,10 @@ var Layout = React.createClass({
 
 
             <Events event_arr={event_arr} className="events" info={this.state.info} type={this.state.chosen} />
+            </div>
+
+            <div>
+              {this.props.children}
             </div>
 
          </div>
