@@ -27145,7 +27145,6 @@
 	/* TODO additions/improvements list
 	- Better error handling if you can't get geolocation data, right now, only an alert window
 	- Improve react router and path handling, display additional data in <eventdetail> window
-	
 	*/
 	
 	//Some Global Vars to store data
@@ -27272,83 +27271,87 @@
 	         { className: 'container' },
 	         _react2.default.createElement(
 	            'h1',
-	            { className: 'welcome' },
+	            { className: 'welcome transparency' },
 	            this.state.welcome
 	         ),
 	         _react2.default.createElement(
 	            'div',
 	            { className: 'hide-' + this.state.hide },
 	            _react2.default.createElement(
-	               'p',
-	               { className: 'intro' },
-	               'LocalSpot - the place for fun, local events, from arts and crafts to food and drinks.'
-	            ),
-	            _react2.default.createElement(
-	               'ul',
-	               null,
+	               'div',
+	               { className: 'transparency' },
 	               _react2.default.createElement(
-	                  'li',
-	                  null,
+	                  'p',
+	                  { className: 'intro' },
+	                  'LocalSpot - the place for fun, local events, from arts and crafts to food and drinks.'
+	               ),
+	               _react2.default.createElement(
+	                  'ul',
+	                  { className: 'listtext' },
 	                  _react2.default.createElement(
-	                     'p',
-	                     { className: 'helper' },
-	                     'Enter your name below, and \'allow\' the browser to find your current location.'
+	                     'li',
+	                     null,
+	                     _react2.default.createElement(
+	                        'p',
+	                        { className: 'helper' },
+	                        'Enter your name below, and \'allow\' the browser to find your current location.'
+	                     )
+	                  ),
+	                  _react2.default.createElement(
+	                     'li',
+	                     null,
+	                     _react2.default.createElement(
+	                        'p',
+	                        { className: 'helper' },
+	                        'Choose a category of events to search locally, and we\'ll map them for you.'
+	                     )
 	                  )
 	               ),
 	               _react2.default.createElement(
-	                  'li',
-	                  null,
+	                  'form',
+	                  { className: 'form', onSubmit: this.onAddSubmit },
+	                  _react2.default.createElement('input', { type: 'text', value: this.state.name, required: true, placeholder: 'your name', onChange: this.onAddInputChanged }),
 	                  _react2.default.createElement(
-	                     'p',
-	                     { className: 'helper' },
-	                     'Choose a category of events to search locally, and we\'ll map them for you.'
-	                  )
+	                     'select',
+	                     { id: 'dropdown', ref: 'options', onChange: this.onAddSelectChanged },
+	                     _react2.default.createElement(
+	                        'option',
+	                        { value: this.state.type[0] },
+	                        this.state.type[0]
+	                     ),
+	                     _react2.default.createElement(
+	                        'option',
+	                        { value: this.state.type[1] },
+	                        this.state.type[1]
+	                     ),
+	                     _react2.default.createElement(
+	                        'option',
+	                        { value: this.state.type[2] },
+	                        this.state.type[2]
+	                     ),
+	                     _react2.default.createElement(
+	                        'option',
+	                        { value: this.state.type[3] },
+	                        this.state.type[3]
+	                     ),
+	                     _react2.default.createElement(
+	                        'option',
+	                        { value: this.state.type[4] },
+	                        this.state.type[4]
+	                     ),
+	                     _react2.default.createElement(
+	                        'option',
+	                        { value: this.state.type[5] },
+	                        this.state.type[5]
+	                     ),
+	                     _react2.default.createElement(
+	                        'option',
+	                        { value: this.state.type[6] },
+	                        this.state.type[6]
+	                     )
+	                  ),
+	                  _react2.default.createElement('input', { type: 'submit', value: 'Go' })
 	               )
-	            ),
-	            _react2.default.createElement(
-	               'form',
-	               { onSubmit: this.onAddSubmit },
-	               _react2.default.createElement('input', { type: 'text', value: this.state.name, required: true, placeholder: 'your name', onChange: this.onAddInputChanged }),
-	               _react2.default.createElement(
-	                  'select',
-	                  { id: 'dropdown', ref: 'options', onChange: this.onAddSelectChanged },
-	                  _react2.default.createElement(
-	                     'option',
-	                     { value: this.state.type[0] },
-	                     this.state.type[0]
-	                  ),
-	                  _react2.default.createElement(
-	                     'option',
-	                     { value: this.state.type[1] },
-	                     this.state.type[1]
-	                  ),
-	                  _react2.default.createElement(
-	                     'option',
-	                     { value: this.state.type[2] },
-	                     this.state.type[2]
-	                  ),
-	                  _react2.default.createElement(
-	                     'option',
-	                     { value: this.state.type[3] },
-	                     this.state.type[3]
-	                  ),
-	                  _react2.default.createElement(
-	                     'option',
-	                     { value: this.state.type[4] },
-	                     this.state.type[4]
-	                  ),
-	                  _react2.default.createElement(
-	                     'option',
-	                     { value: this.state.type[5] },
-	                     this.state.type[5]
-	                  ),
-	                  _react2.default.createElement(
-	                     'option',
-	                     { value: this.state.type[6] },
-	                     this.state.type[6]
-	                  )
-	               ),
-	               _react2.default.createElement('input', { type: 'submit', value: 'Go' })
 	            )
 	         ),
 	         _react2.default.createElement(
@@ -27396,17 +27399,22 @@
 	                     'div',
 	                     { className: 'events' },
 	                     React.createElement(
+	                            'p',
+	                            { className: 'list_top' },
+	                            this.props.info
+	                     ),
+	                     React.createElement(
 	                            'ul',
 	                            { className: 'list' },
-	                            React.createElement(
-	                                   'p',
-	                                   { className: 'list_top' },
-	                                   this.props.info
-	                            ),
 	                            this.props.event_arr.map(function (elist) {
 	                                   return React.createElement(
 	                                          'li',
 	                                          { key: elist.loc_id },
+	                                          React.createElement(
+	                                                 'div',
+	                                                 null,
+	                                                 React.createElement('img', { className: 'loc_img', src: elist.loc_img, alt: elist.loc_name })
+	                                          ),
 	                                          React.createElement(
 	                                                 'p',
 	                                                 { className: 'eventname' },
@@ -27417,32 +27425,24 @@
 	                                                        elist.loc_name
 	                                                 ),
 	                                                 '  - ',
-	                                                 elist.rating,
-	                                                 ' '
-	                                          ),
-	                                          React.createElement(
-	                                                 'div',
-	                                                 null,
-	                                                 React.createElement('img', { className: 'loc_img', src: elist.loc_img, alt: elist.loc_name })
+	                                                 elist.rating
 	                                          ),
 	                                          React.createElement(
 	                                                 'p',
 	                                                 { className: 'eventtext' },
 	                                                 'Location tips: ',
-	                                                 elist.loc_tips,
-	                                                 ' '
+	                                                 elist.loc_tips
 	                                          ),
 	                                          React.createElement(
 	                                                 'p',
-	                                                 null,
+	                                                 { className: 'break' },
 	                                                 React.createElement('i', { className: 'fa fa-calendar-check-o', 'aria-hidden': 'true' }),
 	                                                 React.createElement(
 	                                                        'a',
 	                                                        { href: loc_cal_link + elist.loc_name + '&location=' + elist.loc_address.formattedAddress[0] + ',' + elist.loc_address.formattedAddress[1], target: 'blank' },
 	                                                        'Add to your Google Calendar'
 	                                                 )
-	                                          ),
-	                                          React.createElement('hr', { className: 'break' })
+	                                          )
 	                                   );
 	                            })
 	                     )

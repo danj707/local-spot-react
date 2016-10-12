@@ -8,7 +8,6 @@ import { Router } from 'react-router';
 import { push } from 'react-router-redux';
 import { hashHistory } from 'react-router';
 
-
 /*
 -Layout Component (parent) with two children components:
 
@@ -27,7 +26,6 @@ import { hashHistory } from 'react-router';
 /* TODO additions/improvements list
 - Better error handling if you can't get geolocation data, right now, only an alert window
 - Improve react router and path handling, display additional data in <eventdetail> window
-
 */
 
 //Some Global Vars to store data
@@ -151,30 +149,32 @@ var Layout = React.createClass({
         return (
            <div className="container">
 
-           <h1 className="welcome">{this.state.welcome}</h1>
+           <h1 className="welcome transparency">{this.state.welcome}</h1>
             <div className={'hide-' + this.state.hide}>
+               <div className="transparency">
             <p className="intro">LocalSpot - the place for fun, local events, from arts and crafts to food and drinks.</p>
-            <ul>
+            <ul className="listtext">
             <li><p className="helper">Enter your name below, and 'allow' the browser to find your current location.</p></li>
             <li><p className="helper">Choose a category of events to search locally, and we'll map them for you.</p></li>
             </ul>
 
-             <form onSubmit={this.onAddSubmit}>
-             <input type="text" value={this.state.name} required placeholder="your name" onChange={this.onAddInputChanged} />
+                <form className="form" onSubmit={this.onAddSubmit}>
+                <input type="text" value={this.state.name} required placeholder="your name" onChange={this.onAddInputChanged} />
 
-             <select id="dropdown" ref="options" onChange={this.onAddSelectChanged}>
-               <option value={this.state.type[0]}>{this.state.type[0]}</option>
-               <option value={this.state.type[1]}>{this.state.type[1]}</option>
-               <option value={this.state.type[2]}>{this.state.type[2]}</option>
-               <option value={this.state.type[3]}>{this.state.type[3]}</option>
-               <option value={this.state.type[4]}>{this.state.type[4]}</option>
-               <option value={this.state.type[5]}>{this.state.type[5]}</option>
-               <option value={this.state.type[6]}>{this.state.type[6]}</option>
-             </select>
+                <select id="dropdown" ref="options" onChange={this.onAddSelectChanged}>
+                  <option value={this.state.type[0]}>{this.state.type[0]}</option>
+                  <option value={this.state.type[1]}>{this.state.type[1]}</option>
+                  <option value={this.state.type[2]}>{this.state.type[2]}</option>
+                  <option value={this.state.type[3]}>{this.state.type[3]}</option>
+                  <option value={this.state.type[4]}>{this.state.type[4]}</option>
+                  <option value={this.state.type[5]}>{this.state.type[5]}</option>
+                  <option value={this.state.type[6]}>{this.state.type[6]}</option>
+                </select>
 
-             <input type="submit" value="Go" />
+                <input type="submit" value="Go" />
 
-             </form>
+                </form>
+               </div>
              </div>
 
             <div className="childWrapper">

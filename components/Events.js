@@ -15,22 +15,29 @@ var Events = React.createClass({
        render: function() {
               return (
                      <div className="events">
+                    <p className="list_top">{this.props.info}</p>
                      <ul className="list">
-                     <p className="list_top">{this.props.info}</p>
+
                      {this.props.event_arr.map(elist => (
                             <li key={elist.loc_id}>
-                            <p className="eventname"><i className="fa fa-arrow-right" aria-hidden="true"></i>
-
-                            <a href={elist.link} target="blank">{elist.loc_name}</a>  - {elist.rating} </p>
-
                             <div>
                                    <img className="loc_img" src={elist.loc_img} alt={elist.loc_name}></img>
                             </div>
-                            <p className="eventtext">Location tips: {elist.loc_tips} </p>
+                            <p className="eventname">
+                                   <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                                   <a href={elist.link} target="blank">{elist.loc_name}</a>  - {elist.rating}
+                            </p>
 
-                            <p><i className="fa fa-calendar-check-o" aria-hidden="true"></i><a href={loc_cal_link + elist.loc_name + '&location=' + elist.loc_address.formattedAddress[0] + ',' + elist.loc_address.formattedAddress[1]} target='blank'>Add to your Google Calendar</a></p>
 
-                            <hr className="break"></hr>
+
+                            <p className="eventtext">
+                                   Location tips: {elist.loc_tips}
+                            </p>
+
+                            <p className="break">
+                                   <i className="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                   <a href={loc_cal_link + elist.loc_name + '&location=' + elist.loc_address.formattedAddress[0] + ',' + elist.loc_address.formattedAddress[1]} target='blank'>Add to your Google Calendar</a>
+                            </p>
 
                             </li>
                      ))}
