@@ -13,7 +13,6 @@ The app plots the locations nearby using Google Maps, and provides detailed info
 * Integrates with Google Calendar API to add event data to your personal Calendar
 
 ### Production App Screenshots
-![image](proto1.png)
-![image](proto2.png)
-![image](proto3.png)
-![image](proto4.png)
+![Application 1](app1.png)
+![Application 2](app2.png)
+
