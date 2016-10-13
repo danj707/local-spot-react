@@ -1,24 +1,27 @@
 
+//global link for google calendar link-out
 const loc_cal_link = "https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20160919T220000Z/20160919T230000Z&text=Go+To+";
 
-var React = require('react');
+
+var React = require ('react');
+import { react } from 'react'
 import { render } from 'react-dom'
 import { Router, Route, Link, browserHistory } from 'react-router'
 
-//creates a stateful component named 'List'
-var Events = React.createClass({
-       componentDidMount: function() {
-              //var event_arr = this.props.event_arr ? this.props.event_arr : 'Nothing to display';
-              console.log(this.props.event_arr);
+/*creates a stateful component named 'Events'
+This component handles the display of Event items from Foursquare API
+Receives event_array, maps to a group of li's, displays relevant data
+*/
 
-       },
+var Events = React.createClass({
        render: function() {
               return (
-                     <div className="events">
+                    <div className="events">
                     <p className="list_top">{this.props.info}</p>
-                     <ul className="list">
+                    <ul className="list">
 
-                     {this.props.event_arr.map(elist => (
+                    {/* iterate over the event_arr to produce li's */}
+                    {this.props.event_arr.map(elist => (
                             <li key={elist.loc_id}>
                             <div>
                                    <img className="loc_img" src={elist.loc_img} alt={elist.loc_name}></img>
@@ -27,8 +30,6 @@ var Events = React.createClass({
                                    <i className="fa fa-arrow-right" aria-hidden="true"></i>
                                    <a href={elist.link} target="blank">{elist.loc_name}</a>  - {elist.rating}
                             </p>
-
-
 
                             <p className="eventtext">
                                    Location tips: {elist.loc_tips}
@@ -41,13 +42,10 @@ var Events = React.createClass({
 
                             </li>
                      ))}
-              </ul>
-              </div>
-       );
-
+                     </ul>
+                     </div>
+                   );
        }
 });
-
-
 
 module.exports = Events;

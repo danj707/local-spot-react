@@ -3,13 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <title>LocalSpot - Place for local events, shopping </title>
-
+    <meta name="description" content="LocalSpot, the place to find local events like shopping, restaurants, outdoor events, and trending spots in your area!">
     <script src="react-capstone.1.0.0.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu36r_g4WktmDE-Cv7eaHWM4FwtuBzd9g"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/cec171b7e7.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Bitter" rel="stylesheet">
-
 
 <style>
     * {
@@ -17,7 +16,6 @@
         padding: 0;
         border: 0;
         font-size: 100%;
-        /*The box-sizing property is used to tell the browser what the sizing properties (width and height) should include border-box.*/
         box-sizing: border-box;
 
         /*reset Chrome user agent styles*/
@@ -53,19 +51,27 @@
         font-size:30px;
     }
     .transparency {
-    background-image:url("transparent.jpg");
-    border-radius: 0.5rem;
-    padding: 2rem;
-    width: 60%;
-    margin-bottom: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-
+        background-image:url("transparent.jpg");
+        border-radius: 0.5rem;
+        padding: 2rem;
+        width: 60%;
+        margin-bottom: 1rem;
+        margin-left: auto;
+        margin-right: auto;
     }
     form, input, select {
-     margin:10px;
-     padding:10px;
-     border-radius:2px;
+       margin:10px;
+       padding:10px;
+       border-radius:2px;
+    }
+    i {
+        padding-right:5px;
+    }
+    ul {
+        list-style-type:none;
+    }
+    ul.list {
+        list-style: none;
     }
     .listtext {
         margin-top:5px;
@@ -83,19 +89,10 @@
     .break {
         clear:left;
     }
-    ul {
-        list-style-type:none;
-    }
-    ul.list {
-        list-style: none;
-    }
     .list li {
         text-align:left;
         font-size:12px;
         padding:5px;
-    }
-    i {
-        padding-right:5px;
     }
     .container {
         width:100%;
@@ -162,7 +159,6 @@
       padding:15px;
     }
 
-
     /*small screen size - from 480 to 720 */
     @media screen and (max-width: 720px) {
       body {
@@ -170,25 +166,19 @@
         text-align:center;
         font-family: 'Bitter', serif;
       }
-      .map {
+      .map, .events {
         margin:1% auto;
         display:block;
         width:90%;
         border-radius:1px;
-      }
-      .events {
-        margin:1% auto;
-        display:block;
-        width:90%;
-        border-radius:1px;
-
       }
     }
 </style>
 
 
 </head>
-
+<body>
+<!-- Render react into a single div -->
 <div id="app"></div>
-
+</body>
 </html>

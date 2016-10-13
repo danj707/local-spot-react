@@ -9,20 +9,12 @@ var Link = router.Link;
 
 var Layout = require('./components/Layout');
 var Events = require('./components/Events');
-var EventDetail = require('./components/EventDetail');
 var GoogleMap = require('./components/GoogleMap');
 
 var routes = (
     <Router history={hashHistory}>
-
-    <Route path="/" component={Layout} />
-    <Route component={Layout}>
-        <Route component={EventDetail}>
-            <Route path="/events/:event_id" component={EventDetail} />
-        </Route>
-    </Route>
-
-</Router>
+      <Route path="/" component={Layout} />
+    </Router>
 );
 
 //Doc listener and React renderer
