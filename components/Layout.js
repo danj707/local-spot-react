@@ -161,7 +161,7 @@ var Layout = React.createClass({
             </ul>
 
                 <form className="form" onSubmit={this.onAddSubmit}>
-                <input type="text" value={this.state.name} required placeholder="your name" onChange={this.onAddInputChanged} />
+                <input className="name" type="text" value={this.state.name} required placeholder="your name" onChange={this.onAddInputChanged} />
 
                 <select id="dropdown" ref="options" onChange={this.onAddSelectChanged}>
                   <option value={this.state.type[0]}>{this.state.type[0]}</option>

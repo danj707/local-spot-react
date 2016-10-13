@@ -27303,7 +27303,7 @@
 	               _react2.default.createElement(
 	                  'form',
 	                  { className: 'form', onSubmit: this.onAddSubmit },
-	                  _react2.default.createElement('input', { type: 'text', value: this.state.name, required: true, placeholder: 'your name', onChange: this.onAddInputChanged }),
+	                  _react2.default.createElement('input', { className: 'name', type: 'text', value: this.state.name, required: true, placeholder: 'your name', onChange: this.onAddInputChanged }),
 	                  _react2.default.createElement(
 	                     'select',
 	                     { id: 'dropdown', ref: 'options', onChange: this.onAddSelectChanged },
