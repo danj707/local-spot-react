@@ -42,28 +42,22 @@ function pushDataEvents (element, index, array) {
             let loc_id = element.venue.id;
             let rating = element.venue.rating;
             let link = "https://www.google.com/#q=";
-            let loc_img = '';
             let currency = '';
             if(element.venue.url) {
                link = element.venue.url;
             } else {
                link += element.venue.name;
             }
-            if(element.venue.photos.groups[0].items[0].prefix) {
-               loc_img = element.venue.photos.groups[0].items[0].prefix + "width60" + element.venue.photos.groups[0].items[0].suffix;
-            }
             let loc_address = element.venue.location;
             let loc_name = element.venue.name;
             let loc_lat = element.venue.location.lat;
             let loc_lng = element.venue.location.lng;
+            let loc_img = element.venue.photos.groups[0].items[0].prefix ? element.venue.photos.groups[0].items[0].prefix + "width60" + element.venue.photos.groups[0].items[0].suffix  : 'No image';
             let loc_tips = element.tips[0].text ? element.tips[0].text : 'No Tips';
 
             /*update the array object to hold all this event data, push it all in, then pass to <Event>*/
             event_arr.push({loc_id, rating, link, loc_name, loc_lat, loc_lng, loc_tips, loc_img, loc_address});
          }
-      } else {
-         //handle errors if not enough local results, as in, none
-         return ["Sorry, not enough results, try another search"];
       }
    }
    return event_arr;
@@ -125,6 +119,9 @@ var Layout = React.createClass({
       function success( position ) {
          lat = position.coords.latitude;
          lng = position.coords.longitude;
+         //manually set loc points in the middle of nowhere for testing - middle of the gulf, no results, displays error message
+         //lat = 25.269042;
+         //lng = -90.756869;
       }
       //error handling
       function error() {
@@ -138,6 +135,12 @@ var Layout = React.createClass({
             dataType: 'json',
             cache: false,
             success: function(data) {
+               /*Handle the errors occurring when user geolocates in the middle of nowhere with few local events.  Picked 5
+               as a likely number of 'few' events where there wouldn't be enough data to display properly*/
+               if(data.response.groups[0].items.length < 5) {
+                  this.setState({info: "Sorry, not enough events occurring in your area."});
+                  return;
+               }
                data.response.groups[0].items.forEach(pushDataEvents);
                let text = "Your Top 20 Local " + chosen + " Spots";
                this.setState({info: text, lat:lat,lng:lng});
