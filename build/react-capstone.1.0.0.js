@@ -57,22 +57,12 @@
 	
 	var Layout = __webpack_require__(235);
 	var Events = __webpack_require__(236);
-	var EventDetail = __webpack_require__(243);
 	var GoogleMap = __webpack_require__(237);
 	
 	var routes = React.createElement(
 	    Router,
 	    { history: hashHistory },
-	    React.createElement(Route, { path: '/', component: Layout }),
-	    React.createElement(
-	        Route,
-	        { component: Layout },
-	        React.createElement(
-	            Route,
-	            { component: EventDetail },
-	            React.createElement(Route, { path: '/events/:event_id', component: EventDetail })
-	        )
-	    )
+	    React.createElement(Route, { path: '/', component: Layout })
 	);
 	
 	//Doc listener and React renderer
@@ -27127,6 +27117,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	//Some Global Vars to store data
+	var event_obj = {};
 	/*
 	-Layout Component (parent) with two children components:
 	
@@ -27147,12 +27139,11 @@
 	- Improve react router and path handling, display additional data in <eventdetail> window
 	*/
 	
-	//Some Global Vars to store data
-	var event_obj = {};
 	var event_arr = [];
-	var lat;
-	var lng;
+	var lat = void 0;
+	var lng = void 0;
 	
+	//receives array of events, pushes specific data into event_arr array of objects for use in children component
 	function pushDataEvents(element, index, array) {
 	   if (element.venue.name) {
 	      if (element.venue.location.lat) {
@@ -27180,18 +27171,19 @@
 	            event_arr.push({ loc_id: loc_id, rating: rating, link: link, loc_name: loc_name, loc_lat: loc_lat, loc_lng: loc_lng, loc_tips: loc_tips, loc_img: loc_img, loc_address: loc_address });
 	         }
 	      } else {
-	         //handle errors
+	         //handle errors if not enough local results, as in, none
 	         return ["Sorry, not enough results, try another search"];
 	      }
 	   }
 	   return event_arr;
 	}
 	
-	//creates a stateful component named 'Layout'
+	//creates a stateful parent component named 'Layout'
 	var Layout = _react2.default.createClass({
 	   displayName: 'Layout',
 	
-	   /*Gets the initial state, sets some default state data, hardcoded middle of US for starting lat and long by default, will pan to user's location after geolocate*/
+	   /*Gets the initial state, sets some default state data, hardcoded middle of US for starting lat and long by default,
+	   will pan to user's location after geolocate*/
 	   getInitialState: function getInitialState() {
 	      return {
 	         data: [],
@@ -27233,6 +27225,7 @@
 	      });
 	      this.getInfo(lat, lng, this.state.chosen);
 	   },
+	   //on component mounting, run the geolocate
 	   componentDidMount: function componentDidMount() {
 	      this.getGeolocate();
 	   },
@@ -27243,7 +27236,6 @@
 	      function success(position) {
 	         lat = position.coords.latitude;
 	         lng = position.coords.longitude;
-	         console.log("Your current Lat and Lng is: " + lat + ", " + lng);
 	      }
 	      //error handling
 	      function error() {
@@ -27257,8 +27249,6 @@
 	         dataType: 'json',
 	         cache: false,
 	         success: function (data) {
-	            console.log(data);
-	            //console.log(chosen);
 	            data.response.groups[0].items.forEach(pushDataEvents);
 	            var text = "Your Top 20 Local " + chosen + " Spots";
 	            this.setState({ info: text, lat: lat, lng: lng });
@@ -27377,23 +27367,26 @@
 
 	'use strict';
 	
+	var _react = __webpack_require__(1);
+	
 	var _reactDom = __webpack_require__(34);
 	
 	var _reactRouter = __webpack_require__(172);
 	
+	//global link for google calendar link-out
 	var loc_cal_link = "https://calendar.google.com/calendar/render?action=TEMPLATE&dates=20160919T220000Z/20160919T230000Z&text=Go+To+";
 	
 	var React = __webpack_require__(1);
 	
 	
-	//creates a stateful component named 'List'
+	/*creates a stateful component named 'Events'
+	This component handles the display of Event items from Foursquare API
+	Receives event_array, maps to a group of li's, displays relevant data
+	*/
+	
 	var Events = React.createClass({
 	       displayName: 'Events',
 	
-	       componentDidMount: function componentDidMount() {
-	              //var event_arr = this.props.event_arr ? this.props.event_arr : 'Nothing to display';
-	              console.log(this.props.event_arr);
-	       },
 	       render: function render() {
 	              return React.createElement(
 	                     'div',
@@ -27489,24 +27482,20 @@
 	    key: 'shouldComponentUpdate',
 	
 	
-	    //should it rerender if state updated
+	    //should it rerender if state updated? Yep.
 	    value: function shouldComponentUpdate() {
 	      return true;
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      console.log(this.props.markers);
-	      //   this.setState({
-	      //     lat: nextProps.lat,
-	      //     lng: nextProps.lng,
-	      //     event_arr : nextProps.event_arr
-	      // });
-	
 	      //pan the map to the user's location
 	      this.map.panTo({ lat: this.props.lat, lng: this.props.lng });
 	
-	      //handles the event_arr not being defined, no event data, i.e., nothing to label/map
+	      /*Handles the event_arr not being defined, no event data, i.e., nothing to label/map
+	      Generates the map markers for each item in the event_arr/marker data from Foursquare API
+	      */
+	
 	      if (this.props.markers) {
 	        var mapPoints = this.props.markers;
 	        for (var i = 0; i < mapPoints.length; i++) {
@@ -27518,6 +27507,9 @@
 	        }
 	      }
 	    }
+	
+	    //Displays the initial map with the user's lat/lng data from their geolocate
+	
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
@@ -27899,39 +27891,6 @@
 	    };
 	  };
 	}
-
-/***/ },
-/* 243 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _reactDom = __webpack_require__(34);
-	
-	var _reactRouter = __webpack_require__(172);
-	
-	var React = __webpack_require__(1);
-	
-	
-	var EventDetail = React.createClass({
-	    displayName: 'EventDetail',
-	
-	    componentDidMount: function componentDidMount() {},
-	    render: function render() {
-	        return React.createElement(
-	            'div',
-	            null,
-	            React.createElement(
-	                'strong',
-	                null,
-	                'Name: ',
-	                this.props.children
-	            )
-	        );
-	    }
-	});
-	
-	module.exports = EventDetail;
 
 /***/ }
 /******/ ]);
